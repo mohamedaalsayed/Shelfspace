@@ -10,8 +10,7 @@ export class UserController {
     ) {}
 
     @Get()
-    getAllUsers(
-        @Query() query: FindManyUsersDto) {
+    getAllUsers(@Query() query: FindManyUsersDto) {
         return this.userService.users({
             skip: query.skip,
             take: query.take,
