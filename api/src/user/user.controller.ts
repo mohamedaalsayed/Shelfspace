@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { FindManyUsersDto } from './dto/find-many-users.dto';
 
 @Controller('users')
 export class UserController {
@@ -10,18 +11,13 @@ export class UserController {
 
     @Get()
     getAllUsers(
-        @Query('skip') skip?: string,
-        @Query('take') take?: string,
-        @Query('cursor') cursor?: string,
-        @Query('where') where?: string,
-        @Query('orderBy') orderBy?: string,
-    ) {
+        @Query() query: FindManyUsersDto) {
         return this.userService.users({
-            skip: skip ? +skip : undefined,
-            take: take ? +take : undefined,
-            cursor: cursor ? JSON.parse(cursor) : undefined,
-            where: where ? JSON.parse(where) : undefined,
-            orderBy: orderBy ? JSON.parse(orderBy) : undefined,
+            skip: query.skip,
+            take: query.take,
+            cursor: query.cursor ? JSON.parse(query.cursor) : undefined,
+            where: query.where ? JSON.parse(query.where) : undefined,
+            orderBy: query.orderBy ? JSON.parse(query.orderBy) : undefined,
         });
     }
 
@@ -36,7 +32,7 @@ export class UserController {
     }
 
     @Patch('id')
-    updateUser(@Param('id') id: String, @Body() data: CreateUserDto) {
+    updateUser(@Param('id') id: string, @Body() data: CreateUserDto) {
         this.userService.updateUser({ 
             where: {id: +id},
             data 
@@ -44,7 +40,7 @@ export class UserController {
     }
     
     @Delete('id')
-    deleteUser(@Param('id') id: String) {
+    deleteUser(@Param('id') id: string) {
         this.userService.deleteUser({ id: +id })
     }
 }
