@@ -7,6 +7,6 @@ import { HashService } from 'src/auth/hash.service';
 @Module({
   imports: [PrismaModule],
   providers: [UserService, HashService],
-  controllers: [UserController]
+  controllers: [UserController],
 })
 export class UserModule {}

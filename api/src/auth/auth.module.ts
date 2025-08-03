@@ -6,6 +6,6 @@ import { HashService } from './hash.service';
 @Module({
   providers: [AuthService, HashService],
   controllers: [AuthController],
-  exports: [HashService]
+  exports: [HashService],
 })
 export class AuthModule {}
