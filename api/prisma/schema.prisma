@@ -32,7 +32,7 @@ model Item {
   itemType    String
   status      String
   progress    Int
-  added_at    DateTime
+  addedAt    DateTime
   notes       Note[]
   hightlights Highlight[]
 }
