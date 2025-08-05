@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsOptional, IsNumber, IsString } from 'class-validator';
+import { IsOptional, IsNumber } from 'class-validator';
 
 export class FindManyUsersDto {
   @IsOptional()
