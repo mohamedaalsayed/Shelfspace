@@ -32,7 +32,7 @@ model Item {
   itemType    String
   status      String
   progress    Int
-  addedAt    DateTime
+  addedAt     DateTime
   collections Collection[]
   notes       Note[]
   hightlights Highlight[]
@@ -42,10 +42,9 @@ model Collection {
   id          String  @id @unique @default(cuid())
   user        User    @relation(fields: [userId], references: [id])
   userId      Int
-  item        Item      @relation(fields: [itemId], references: [id])
-  itemId      String
   name        String
   description String
+  items       Item[]
 }
 
 model Note {
