@@ -48,6 +48,17 @@ export class CollectionService {
     });
   }
 
+  async addItem(itemId: string, collectionId: string) : Promise<Item> {
+    return this.prisma.item.update({
+      where: {id: itemId},
+      data: {
+        collections: {
+          connect: {id: collectionId}
+        }
+      }
+    })
+  }
+
   async updateCollection(params: {
     where: Prisma.CollectionWhereUniqueInput;
     data: Prisma.CollectionUpdateInput;

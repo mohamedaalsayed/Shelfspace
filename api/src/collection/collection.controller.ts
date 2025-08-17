@@ -36,6 +36,11 @@ export class CollectionController {
   createCollection(@Body() data: CreateCollectionDto) {
     this.collectionService.createCollection(data);
   }
+  
+  @Patch('/addItem/:id')
+  addItem(@Body() itemId: string, collectionId: string) {
+    this.collectionService.addItem(itemId, collectionId);
+  }
 
   @Patch('id')
   updateCollection(@Param('id') id: string, @Body() data: CreateCollectionDto) {

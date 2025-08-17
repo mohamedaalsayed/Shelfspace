@@ -34,7 +34,6 @@ model Item {
   progress    Int
   addedAt     DateTime
   collections Collection[]
-  notes       Note[]
   hightlights Highlight[]
 }
 
@@ -49,8 +48,7 @@ model Collection {
 
 model Note {
   id          String    @id @unique @default(cuid())
-  item        Item      @relation(fields: [itemId], references: [id])
-  itemId      String
+  content     String
   highlight   Highlight @relation(fields: [highlightId], references: [id])
   highlightId String
 }
