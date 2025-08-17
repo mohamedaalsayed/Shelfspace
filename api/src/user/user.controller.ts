@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -17,6 +19,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
+  @HttpCode(HttpStatus.OK)
   getAllUsers(@Query() query: FindManyUsersDto) {
     return this.userService.users({
       skip: query.skip,
@@ -28,24 +31,29 @@ export class UserController {
   }
 
   @Get(':id')
+  @HttpCode(HttpStatus.OK)
   getUser(@Param('id') id: number) {
-    this.userService.user({ id: +id });
+    return this.userService.user({ id: +id });
   }
 
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   createUser(@Body() data: CreateUserDto) {
     this.userService.createUser(data);
   }
 
-  @Patch('id')
+  @Patch(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   updateUser(@Param('id') id: string, @Body() data: CreateUserDto) {
     this.userService.updateUser({
       where: { id: +id },
       data,
     });
+    return 
   }
 
-  @Delete('id')
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   deleteUser(@Param('id') id: string) {
     this.userService.deleteUser({ id: +id });
   }
