@@ -17,8 +17,8 @@ export class CollectionController {
   constructor(private readonly collectionService: CollectionService) {}
 
   @Get()
-  getAllCollections(@Query() query: FindManyCollectionsDto) {
-    return this.collectionService.collections({
+  async getAllCollections(@Query() query: FindManyCollectionsDto) {
+    return await this.collectionService.collections({
       skip: query.skip,
       take: query.take,
       cursor: query.cursor ? JSON.parse(query.cursor) : undefined,
@@ -28,30 +28,30 @@ export class CollectionController {
   }
 
   @Get(':id')
-  getCollection(@Param('id') id: string) {
-    this.collectionService.collection({ id: id });
+  async getCollection(@Param('id') id: string) {
+    await this.collectionService.collection({ id: id });
   }
 
   @Post()
-  createCollection(@Body() data: CreateCollectionDto) {
-    this.collectionService.createCollection(data);
+  async createCollection(@Body() data: CreateCollectionDto) {
+    await this.collectionService.createCollection(data);
   }
   
   @Patch('/addItem/:id')
-  addItem(@Body() itemId: string, collectionId: string) {
-    this.collectionService.addItem(itemId, collectionId);
+  async addItem(@Body() itemId: string, collectionId: string) {
+    await this.collectionService.addItem(itemId, collectionId);
   }
 
   @Patch('id')
-  updateCollection(@Param('id') id: string, @Body() data: CreateCollectionDto) {
-    this.collectionService.updateCollection({
+  async updateCollection(@Param('id') id: string, @Body() data: CreateCollectionDto) {
+    await this.collectionService.updateCollection({
       where: { id: id },
       data,
     });
   }
 
   @Delete('id')
-  deleteCollection(@Param('id') id: string) {
-    this.collectionService.deleteCollection({ id: id });
+  async deleteCollection(@Param('id') id: string) {
+    await this.collectionService.deleteCollection({ id: id });
   }
 }

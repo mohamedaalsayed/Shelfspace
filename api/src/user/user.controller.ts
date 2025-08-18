@@ -20,8 +20,8 @@ export class UserController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  getAllUsers(@Query() query: FindManyUsersDto) {
-    return this.userService.users({
+  async getAllUsers(@Query() query: FindManyUsersDto) {
+    return await this.userService.users({
       skip: query.skip,
       take: query.take,
       cursor: query.cursor ? JSON.parse(query.cursor) : undefined,
@@ -32,29 +32,28 @@ export class UserController {
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  getUser(@Param('id') id: number) {
-    return this.userService.user({ id: +id });
+  async getUser(@Param('id') id: number) {
+    return await this.userService.user({ id: +id });
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  createUser(@Body() data: CreateUserDto) {
-    this.userService.createUser(data);
+  async createUser(@Body() data: CreateUserDto) {
+    await this.userService.createUser(data);
   }
 
   @Patch(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  updateUser(@Param('id') id: string, @Body() data: CreateUserDto) {
-    this.userService.updateUser({
+  async updateUser(@Param('id') id: string, @Body() data: CreateUserDto) {
+    await this.userService.updateUser({
       where: { id: +id },
       data,
     });
-    return 
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  deleteUser(@Param('id') id: string) {
-    this.userService.deleteUser({ id: +id });
+  async deleteUser(@Param('id') id: string) {
+    await this.userService.deleteUser({ id: +id });
   }
 }

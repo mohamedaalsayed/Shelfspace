@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -17,8 +19,9 @@ export class ItemController {
   constructor(private readonly itemService: ItemService) {}
 
   @Get()
-  getAllItems(@Query() query: FindManyItemsDto) {
-    return this.itemService.items({
+  @HttpCode(HttpStatus.OK)
+  async getAllItems(@Query() query: FindManyItemsDto) {
+    return await this.itemService.items({
       skip: query.skip,
       take: query.take,
       cursor: query.cursor ? JSON.parse(query.cursor) : undefined,
@@ -28,25 +31,29 @@ export class ItemController {
   }
 
   @Get(':id')
-  getItem(@Param('id') id: string) {
-    this.itemService.item({ id: id });
+  @HttpCode(HttpStatus.OK)
+  async getItem(@Param('id') id: string) {
+    await this.itemService.item({ id: id });
   }
 
   @Post()
-  createItem(@Body() data: CreateItemDto) {
-    this.itemService.createItem(data);
+  @HttpCode(HttpStatus.CREATED)
+  async createItem(@Body() data: CreateItemDto) {
+    await this.itemService.createItem(data);
   }
 
-  @Patch('id')
-  updateItem(@Param('id') id: string, @Body() data: CreateItemDto) {
-    this.itemService.updateItem({
+  @Patch(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async updateItem(@Param('id') id: string, @Body() data: CreateItemDto) {
+    await this.itemService.updateItem({
       where: { id: id },
       data,
     });
   }
 
-  @Delete('id')
-  deleteItem(@Param('id') id: string) {
-    this.itemService.deleteItem({ id: id });
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async deleteItem(@Param('id') id: string) {
+    await this.itemService.deleteItem({ id: id });
   }
 }
