@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
 import { Item, Prisma } from '@prisma/client';
 import { CreateItemDto } from './dto/create-item.dto';
@@ -32,8 +32,21 @@ export class ItemService {
     });
   }
 
+  async checkItemByTitle(title: string): Promise<Boolean> {
+    const exists = await this.prisma.item.count({
+      where: { title }
+    });
+
+    return exists > 0;
+  }
+
   async createItem(data: CreateItemDto): Promise<Item> {
+    if (this.checkItemByTitle(data.title)) {
+      throw new ConflictException("There is an item with this title")
+    }
     const { userId, ...itemData } = data;
+    const now: Date = new Date();
+    itemData.addedAt = now;
 
     return this.prisma.item.create({
       data: {
