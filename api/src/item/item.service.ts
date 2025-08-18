@@ -32,21 +32,10 @@ export class ItemService {
     });
   }
 
-  async userItems(userId: number, params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.ItemWhereUniqueInput;
-    where?: Prisma.ItemWhereInput;
-    orderBy?: Prisma.ItemOrderByWithRelationInput;
-  }) : Promise<Item[]> {
-    const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.item.findMany({
-      where: { userId },
-      skip,
-      take,
-      cursor,
-      orderBy,
-    });
+  async userItems(userId: number): Promise<Item[]> {
+    return this.items({ 
+      where: { userId }
+    })
   }
 
   async checkItemByTitle(title: string): Promise<Boolean> {
