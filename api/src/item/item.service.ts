@@ -32,6 +32,23 @@ export class ItemService {
     });
   }
 
+  async userItems(userId: number, params: {
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.ItemWhereUniqueInput;
+    where?: Prisma.ItemWhereInput;
+    orderBy?: Prisma.ItemOrderByWithRelationInput;
+  }) : Promise<Item[]> {
+    const { skip, take, cursor, where, orderBy } = params;
+    return this.prisma.item.findMany({
+      where: { userId },
+      skip,
+      take,
+      cursor,
+      orderBy,
+    });
+  }
+
   async checkItemByTitle(title: string): Promise<Boolean> {
     const exists = await this.prisma.item.count({
       where: { title }
@@ -40,18 +57,28 @@ export class ItemService {
     return exists > 0;
   }
 
+  async checkUserItemByTitle(userId: number, title: string): Promise<Boolean> {
+    const exists = await this.prisma.item.count({
+      where: {
+        userId,
+        title
+      }
+    })
+    return exists > 0;
+  }
+
   async createItem(data: CreateItemDto): Promise<Item> {
-    if (this.checkItemByTitle(data.title)) {
+    if (await this.checkUserItemByTitle(data.userId, data.title)) {
       throw new ConflictException("There is an item with this title")
     }
     const { userId, ...itemData } = data;
     const now: Date = new Date();
-    itemData.addedAt = now;
-    itemData.status = ReadingStatus.NOT_STARTED;
 
     return this.prisma.item.create({
       data: {
         ...itemData,
+        addedAt: now,
+        status: ReadingStatus.NOT_STARTED,
         user: {
           connect: {
             id: userId,
