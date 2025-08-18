@@ -1,6 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
-import { Item, Prisma } from '@prisma/client';
+import { Item, ReadingStatus, Prisma } from '@prisma/client';
 import { CreateItemDto } from './dto/create-item.dto';
 
 @Injectable()
@@ -47,6 +47,7 @@ export class ItemService {
     const { userId, ...itemData } = data;
     const now: Date = new Date();
     itemData.addedAt = now;
+    itemData.status = ReadingStatus.NOT_STARTED;
 
     return this.prisma.item.create({
       data: {

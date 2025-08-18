@@ -5,7 +5,9 @@ import {
   IsOptional,
   IsUrl,
   IsDate,
+  IsEnum,
 } from 'class-validator';
+import { ReadingStatus } from '@prisma/client';
 
 export class UserConnectDto {
   @IsNumber()
@@ -33,9 +35,9 @@ export class CreateItemDto {
   @IsNotEmpty()
   itemType: string;
 
-  @IsString()
+  @IsEnum(ReadingStatus)
   @IsNotEmpty()
-  status: string;
+  status: ReadingStatus;
 
   @IsNumber()
   @IsNotEmpty()
