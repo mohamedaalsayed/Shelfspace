@@ -36,9 +36,9 @@ export class ItemController {
     await this.itemService.item({ id: id });
   }
 
-  @Get(':userId')
+  @Get('/user/:userId')
   @HttpCode(HttpStatus.OK)
-  async getUserItems(@Param('userId') userId: number, @Query() query: FindManyItemsDto) {
+  async getUserItems(@Param('userId') userId: number) {
     return await this.itemService.userItems(userId);
   }
 
