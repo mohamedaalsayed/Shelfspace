@@ -42,7 +42,7 @@ export class CollectionController {
     await this.collectionService.addItem(itemId, collectionId);
   }
 
-  @Patch('id')
+  @Patch(':id')
   async updateCollection(@Param('id') id: string, @Body() data: CreateCollectionDto) {
     await this.collectionService.updateCollection({
       where: { id: id },
@@ -50,7 +50,7 @@ export class CollectionController {
     });
   }
 
-  @Delete('id')
+  @Delete(':id')
   async deleteCollection(@Param('id') id: string) {
     await this.collectionService.deleteCollection({ id: id });
   }
